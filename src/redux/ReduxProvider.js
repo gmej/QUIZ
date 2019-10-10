@@ -1,25 +1,31 @@
-import { Provider } from 'react-redux';
-import GlobalState from './reducers';
-import { createStore } from 'redux';
-import {questions} from '../assets/mock';
 
+import thunkMiddleware from 'redux-thunk'
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
 import React from 'react';
+
+//import { questions } from '../assets/mock';
+import GlobalState from './reducers';
+
 import App from '../components/App.jsx';
 
-let initialState = {
-    score: 0,
-    finished: false,
-    currentQuestion: 0,
-    questions: [ ...questions ]
-};
 
 export default class ReduxProvider extends React.Component {
     constructor(props) {
         super(props);
-        this.initialState = initialState;
+        this.initialState = {
+            score: 0,
+            finished: false,
+            currentQuestion: 0,
+            questions: [],
+            availableQuestions: [],
+            timeLeft: 100,
+            fetching: false,
+            fetchError: null,
+        };
         this.store = this.configureStore();
     }
-
+    
     render() {
         return (
             <Provider store={this.store}>
@@ -31,6 +37,6 @@ export default class ReduxProvider extends React.Component {
     }
 
     configureStore() {
-        return createStore(GlobalState, this.initialState);
+        return createStore(GlobalState, applyMiddleware(thunkMiddleware));
     }
 }

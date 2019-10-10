@@ -5,15 +5,13 @@ const buttonStyle = {
 }
 
 export default class ButtonChangeQuestion extends Button {
-
     constructor(props) {
         super(props);
         this.click = this.click.bind(this);
     }
 
     click(){
-        console.log('this.props.direction :', this.props.direction);
-        this.props.changeQuestion(this.props.direction);
+        this.props.changeQuestion(this.props.targetQuestionId);
     }
     render() { 
         return (
