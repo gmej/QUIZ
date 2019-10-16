@@ -19,7 +19,7 @@ export default class QuestionsIndexes extends React.Component {
         let questions = [];
         for (let i = 0; i < this.props.availableQuestions; i++) {
             questions.push(
-                <button  id={i} onClick={this.onClick}>{i + 1}</button>
+                <button key={i}  id={i} onClick={this.onClick}>{i + 1}</button>
             );
         }
         return (

@@ -7,6 +7,7 @@ export const TIMER_REFRESH = 'TIMER_REFRESH';
 export const IS_FETCHING = 'IS_FETCHING';
 export const FETCH_ERROR = 'FETCH_ERROR';
 export const TIMEOUT_START = 'TIMEOUT_START';
+export const RESET = 'RESET';
 
 
 const MY_TOKEN = '170928d0aade25dc7cc5';
@@ -16,14 +17,11 @@ export function questionAnswer(index, answer) {
     console.log('question answer!');
     return { type: QUESTION_ANSWER, payload: { index, answer } };
 }
+
 export function submit(questions) {
     console.log('submit!');
     return { type: SUBMIT, payload: { questions } };
 }
-/* export function timeout(questions) {
-    console.log('timeout!');
-    return { type: TIMEOUT, payload: { questions } };
-} */
 
 export function changeQuestion(index) {
     return { type: CHANGE_QUESTION, payload: { index } };
@@ -50,6 +48,10 @@ export function startTimeout() {
     return { type: TIMEOUT_START }
 }
 
+export function reset() {
+    return { type: RESET }
+}
+
 
 export function fetchDataFromServer() {
     return dispatch => {
@@ -68,6 +70,7 @@ export function fetchDataFromServer() {
                     dispatch(fetchDataFromServer());
                     return;
                 }
+                console.log('questions :', questions);
                 dispatch(initQuestions(questions));
                 dispatch(fetchQuestions(false));
             })

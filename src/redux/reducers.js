@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { QUESTION_ANSWER, CHANGE_QUESTION, SUBMIT, INIT_QUESTIONS, TIMER_REFRESH, IS_FETCHING, FETCH_ERROR, TIMEOUT_START } from './actions';
+import { QUESTION_ANSWER, CHANGE_QUESTION, SUBMIT, INIT_QUESTIONS, TIMER_REFRESH, IS_FETCHING, FETCH_ERROR, RESET } from './actions';
 
 function scoreReducer(state = 0, action = {}) {
     switch (action.type) {
@@ -11,6 +11,8 @@ function scoreReducer(state = 0, action = {}) {
                 }
             })
             return state = score;
+        case RESET:
+            return state = 0
         default:
             return state;
     }
@@ -20,6 +22,8 @@ function finishedReducer(state = false, action = {}) {
     switch (action.type) {
         case SUBMIT:
             return state = true;
+        case RESET:
+            return state = false;
         default:
             return state;
     }
@@ -29,6 +33,8 @@ function currentQuestionReducer(state = 0, action = {}) {
     switch (action.type) {
         case CHANGE_QUESTION:
             return state = action.payload.index
+        case RESET:
+            return state = 0;
         default:
             return state;
     }
@@ -61,15 +67,12 @@ function availableQuestionsReducer(state = [], action = {}) {
     }
 }
 
-function timeLeftReducer(state = 100, action = {}) {
-    console.log('action :', action);
+function timeLeftReducer(state = 120, action = {}) {
     switch (action.type) {
-        case TIMEOUT_START:
-            return state = 100;
         case TIMER_REFRESH:
             return state = state - 1;
-        case SUBMIT:
-            return state = 0;
+        case RESET:
+            return state = 120;
         default:
             return state;
     }
@@ -79,14 +82,30 @@ function fetchingReducer(state = false, action = {}) {
     switch (action.type) {
         case IS_FETCHING:
             return state = action.payload.isFetching;
+        case RESET:
+            return state = true;
         default:
             return state;
     }
 }
+
 function fetchErrorReducer(state = null, action = {}) {
     switch (action.type) {
         case FETCH_ERROR:
             return state = action.payload.error;
+        case RESET:
+            return state = null;
+        default:
+            return state;
+    }
+}
+
+function isResettingReducer(state = false, action = {}) {
+    switch (action.type) {
+        case RESET:
+            return state = true;
+        case INIT_QUESTIONS:
+            return state = false;
         default:
             return state;
     }
@@ -102,6 +121,7 @@ const GlobalState = (combineReducers({
     fetching: fetchingReducer,
     fetchError: fetchErrorReducer,
     availableQuestions: availableQuestionsReducer,
+    isResetting: isResettingReducer,
 }));
 
 export default GlobalState;

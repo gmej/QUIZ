@@ -19,9 +19,10 @@ export default class ReduxProvider extends React.Component {
             currentQuestion: 0,
             questions: [],
             availableQuestions: [],
-            timeLeft: 100,
+            timeLeft: 10,
             fetching: false,
             fetchError: null,
+            isResetting: false
         };
         this.store = this.configureStore();
     }

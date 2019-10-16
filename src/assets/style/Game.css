@@ -1,16 +1,37 @@
-.question{
-    margin-top: 0px;
-    margin-bottom: 0px;
-    width: 350px;
-    box-shadow: 0 4px 8px  rgba(0,0,0 0.2), 0 6px 20px 0 rgba(0,0,0 0.19);
-    padding: 1em;
+
+
+.data{
+    
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.row{
+  padding: 1em;
+  margin-top: 10px;
+}
+
+.game{
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.thumbnail{
+width:250px;
+height:190px;
 
 }
 
 .card{
-    margin-top: 10px;
-    width: 350px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0 0.2), 0 6px 20px 0 rgba(0,0,0 0.19);
-    padding: 1em;
-  
-  } 
+    padding:1em;
+
+}
+
+.questionImage{
+width:350px;
+height:300px;
+padding:1em;
+
+}

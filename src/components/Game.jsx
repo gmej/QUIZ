@@ -2,18 +2,14 @@ import React from 'react';
 import ButtonChangeQuestion from './ButtonChangeQuestion';
 import ButtonSubmit from './ButtonSubmit';
 import QuestionsIndexes from './QuestionsIndexes';
-import { Container, Row, Col, Image } from 'react-bootstrap';
+import { Container, Row, Image } from 'react-bootstrap';
 import '../assets/style/Game.css';
 import Tips from './Tips';
-
-/* import PropTypes from 'prop-types';
- */
 
 export default class Game extends React.Component {
 
     constructor(props) {
         super(props);
-        //this.textChange = this.textChange.bind(this);
         this.onSubmitPress = this.onSubmitPress.bind(this);
         this.changeQuestion = this.changeQuestion.bind(this);
         this.onTimeCountChange = this.onTimeCountChange.bind(this);
@@ -22,10 +18,6 @@ export default class Game extends React.Component {
     onSubmitPress() {
         this.props.onSubmitPress();
     }
-
-    /* textChange(text) {
-        this.props.appTextChange(text);
-    } */
 
     changeQuestion(index) {
         this.props.changeQuestion(index);
@@ -36,46 +28,68 @@ export default class Game extends React.Component {
     }
 
     render() {
+        let questionImageUrl = null;
+        let authorImageUrl = null;
+        try {
+            questionImageUrl = this.props.question.attachment.url;
+        } catch (e) { }
+        try {
+            authorImageUrl = this.props.question.author.photo.url;
+        } catch (e) { }
         return (
-            <div>
-                <Container className="card" style={{ height: '100%', width: '100%', position: 'relative', right: 0, top: 0 }}>
-                    <div className="question">
-                        <Row><p>QUESTION: <b>{this.props.question.question}</b></p>
-                            <Image src={this.props.question.attachment.url} fluid alt={this.props.question.attachment.filename} />
-                            <Tips tips={this.props.question.tips} />
-                        </Row>
-                    </div>
-                </Container>
+            <div className="game">
                 <Container className="card">
+                    <div className="question">
+                        <p>QUESTION: <b>{this.props.question.question}</b></p>
+                    </div>
                     <div className="options">
-                        <Row>
+                        <div>
                             <input type="text"
                                 placeholder="Type your answer here "
                                 value={this.props.question.userAnswer || ""}
                                 onChange={(e) => {
                                     this.props.onQuestionAnswer(e.target.value);
                                 }} />
+                        </div>
+                        <div>
                             <ButtonSubmit onSubmitPress={this.onSubmitPress} />
+                        </div>
+                        <div>
+
                             <ButtonChangeQuestion
                                 changeQuestion={this.changeQuestion}
                                 direction={'Previous question'}
                                 disable={this.props.firstQuestion}
-                                targetQuestionId={this.props.currentQuestion-1} />
+                                targetQuestionId={this.props.currentQuestion - 1} />
                             <ButtonChangeQuestion
                                 changeQuestion={this.changeQuestion}
                                 direction={'Next question'}
                                 disable={this.props.lastQuestion}
-                                targetQuestionId={this.props.currentQuestion+1} />
-                        </Row>
+                                targetQuestionId={this.props.currentQuestion + 1} />
+                        </div>
                     </div>
                     <div>
                         <QuestionsIndexes
                             availableQuestions={this.props.availableQuestions}
                             onQuestionSelect={this.changeQuestion} />
                     </div>
+                    <Tips tips={this.props.question.tips} />
                 </Container>
-                <Container>
+                <Container className="questionImage">
 
+                    {questionImageUrl != null &&
+                        <Image src={this.props.question.attachment.url} fluid alt={this.props.question.attachment.filename} />
+                    }
+                </Container>
+                <Container className="card">
+                        <div>Autor: <b>{this.props.question.author.username}</b></div>
+                        <div>
+                            {authorImageUrl != null &&
+                                <div className="thumbnail">
+                                    < Image src={this.props.question.author.photo.url} thumbnail />
+                                </div>
+                            }
+                        </div>
                 </Container>
             </div>
 
